@@ -15,7 +15,7 @@ This is the mid-term project about Camera-based 2D feature tracking (to check th
 
 ## 2. Key Implementation
 
-### MP.1 Data Buffer Optimization
+### Data Buffer Optimization (MP.1)
 
 ```c++
 constexpr int dataBufferSize{ 2 };      // # images which stay in memory (ring buffer) at the same time
@@ -37,7 +37,7 @@ for (size_t imgIndex{ 0 }; imgIndex <= imgEndIndex - imgStartIndex; ++imgIndex) 
 ```
 
 
-### MP.2,3,4 Keypoint Detection/Removal/Descriptors
+### Keypoint Detection/Removal/Descriptors (MP.2,3,4)
 
 ```c++
 getKeypointsAndDescriptors(detectorType, descriptorType, it_curr->getCameraImg(), elapsedTime, keypoints, descriptors);
@@ -116,7 +116,7 @@ void computeDescriptors(const Detector detectorType, const Descriptor descriptor
 }
 ```
 
-### MP.5,6 Descriptor Matching/DistanceRatio
+### Descriptor Matching/DistanceRatio (MP.5,6)
 
 ```c++
 matchDescriptors(it_prev->getDescriptors(), it_curr->getDescriptors(), matcherType, descriptorOptionType, selectorType, crossCheck, matches);
