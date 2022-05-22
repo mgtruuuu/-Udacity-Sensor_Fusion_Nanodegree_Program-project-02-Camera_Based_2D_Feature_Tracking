@@ -211,7 +211,7 @@ void detKeypointsHarris(const cv::Mat& img, std::vector<cv::KeyPoint>& keypoints
 
     // detector parameters
     
-    constexpr int blockSize{ 2 };       // For every pixel, a blockSize × blockSize neighborhood is considered.
+    constexpr int blockSize{ 2 };       // For every pixel, a blockSize ï¿½ blockSize neighborhood is considered.
     constexpr int apertureSize{ 3 };    // aperture parameter for Sobel operator (must be odd)
     constexpr int minResponse{ 100 };   // minimum value for a corner in the 8bit scaled response matrix
     constexpr double k{ 0.04 };         // Harris parameter (see equation for details)
@@ -288,8 +288,7 @@ void detKeypointsFAST(const cv::Mat& img, std::vector<cv::KeyPoint>& keypoints) 
 
 
 // Find best matches for keypoints in two camera images based on several matching methods.
-void matchDescriptors(const std::vector<cv::KeyPoint>& kPtsSource, const std::vector<cv::KeyPoint>& kPtsRef,
-    const cv::Mat& descSource, const cv::Mat& descRef,
+void matchDescriptors(const cv::Mat& descSource, const cv::Mat& descRef,
     const Matcher matcherType, const DescriptorOption descriptorOptionType,
     const Selector selectorType, const bool crossCheck, std::vector<cv::DMatch>& matches) {
 

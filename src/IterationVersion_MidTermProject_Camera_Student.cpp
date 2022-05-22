@@ -288,8 +288,7 @@ void detKeypointsFAST(const cv::Mat& img, std::vector<cv::KeyPoint>& keypoints) 
 
 
 // Find best matches for keypoints in two camera images based on several matching methods.
-void matchDescriptors(const std::vector<cv::KeyPoint>& kPtsSource, const std::vector<cv::KeyPoint>& kPtsRef,
-    const cv::Mat& descSource, const cv::Mat& descRef,
+void matchDescriptors(const cv::Mat& descSource, const cv::Mat& descRef,
     const Matcher matcherType, const DescriptorOption descriptorOptionType,
     const Selector selectorType, const bool crossCheck, std::vector<cv::DMatch>& matches) {
 

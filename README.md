@@ -117,7 +117,7 @@ void computeDescriptors(const Detector detectorType, const Descriptor descriptor
 ### MP.5,6 Descriptor Matching/DistanceRatio
 
 ```c++
-matchDescriptors(it_prev->getKeypoints(), it_curr->getKeypoints(), it_prev->getDescriptors(), it_curr->getDescriptors(), matcherType, descriptorOptionType, selectorType, crossCheck, matches);
+matchDescriptors(it_prev->getDescriptors(), it_curr->getDescriptors(), matcherType, descriptorOptionType, selectorType, crossCheck, matches);
 ```
 
 ```c++
