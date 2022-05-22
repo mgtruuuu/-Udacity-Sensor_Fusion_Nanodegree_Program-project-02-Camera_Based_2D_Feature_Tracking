@@ -117,6 +117,10 @@ void computeDescriptors(const Detector detectorType, const Descriptor descriptor
 ### MP.5,6 Descriptor Matching/DistanceRatio
 
 ```c++
+matchDescriptors(it_prev->getKeypoints(), it_curr->getKeypoints(), it_prev->getDescriptors(), it_curr->getDescriptors(), matcherType, descriptorOptionType, selectorType, crossCheck, matches);
+```
+
+```c++
 // Find best matches for keypoints in two camera images based on several matching methods.
 void matchDescriptors(const std::vector<cv::KeyPoint>& kPtsSource, const std::vector<cv::KeyPoint>& kPtsRef, const cv::Mat& descSource, const cv::Mat& descRef, const Matcher matcherType, const DescriptorOption descriptorOptionType, const Selector selectorType, const bool crossCheck, std::vector<cv::DMatch>& matches) {
     
