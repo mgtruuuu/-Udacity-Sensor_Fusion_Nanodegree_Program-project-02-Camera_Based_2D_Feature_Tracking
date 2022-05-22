@@ -1,4 +1,6 @@
-# SFND 2D Feature Tracking
+# Camera-based 2D Feature Tracking
+
+## 1. Project Overview
 
 <img src="images/keypoints.png" width="820" height="248" />
 
@@ -11,7 +13,7 @@ This is the mid-term project about Camera-based 2D feature tracking (to check th
 - Performance evaluation (Test and Compare the various algorithms in different combinations)
 
 
-## In detail
+## 2. Key Implementation
 
 ### MP.1 Data Buffer Optimization
 
@@ -166,7 +168,7 @@ void matchDescriptors(const std::vector<cv::KeyPoint>& kPtsSource, const std::ve
 ```
 
 
-## Performance evaluation (MP.7,8,9)
+## 3. Performance evaluation (MP.7,8,9)
 
 ### Performance benchmark (average values of images )
 
@@ -221,7 +223,7 @@ The most important factor that I consider when selecting the good combination is
 
 
 
-## Dependencies for Running Locally
+## 4. Dependencies for Running Locally
 
 1. cmake >= 2.8
 
@@ -256,7 +258,7 @@ The most important factor that I consider when selecting the good combination is
 
 
 
-## Basic Build Instructions
+## 5. Basic Build Instructions
 
 1. Clone this repo.
 2. Make a build directory in the top level directory: `mkdir build && cd build`
