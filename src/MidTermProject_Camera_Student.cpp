@@ -161,8 +161,7 @@ int main(int argc, const char* argv[]) {
 
         const auto it_prev{ it_curr - 1 };
         constexpr bool crossCheck{ false };
-        matchDescriptors(it_prev->getKeypoints(), it_curr->getKeypoints(),
-            it_prev->getDescriptors(), it_curr->getDescriptors(),
+        matchDescriptors(it_prev->getDescriptors(), it_curr->getDescriptors(),
             matcherType, descriptorOptionType, selectorType, crossCheck, matches);
 
         it_curr->setKPMatches(matches);
