@@ -9,7 +9,7 @@
 
 
 
-This is the mid-term project about Camera-based 2D feature tracking (to check the final project click [here](https://github.com/mgtruuuu/Udacity-Sensor_Fusion_Nanodegree_Program-project-03-Track_an_Object_in_3D_Space.git)). It covers the following key concepts:
+This is the mid-term project about Camera-based 2D feature tracking (to check the final project click [here](https://github.com/mgtruuuu/Udacity-Sensor_Fusion-Camera-Track_an_Object_in_3D_Space)). It covers the following key concepts:
 
 - Keypoint detection (Shi-Tomasi, HARRIS, FAST, BRISK, ORB, AKAZE and SIFT)
 - Descriptor extraction (BRISK, BRIEF, ORB, FREAK, AKAZE and SIFT)
