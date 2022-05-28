@@ -1,8 +1,14 @@
 #ifndef dataStructures_h
 #define dataStructures_h
 
-#include <vector>
 #include <opencv2/core.hpp>
+
+#include <iostream>
+#include <string_view>
+#include <vector>
+
+
+
 
 
 struct Result {
@@ -82,8 +88,6 @@ public:
 	}
 
 };
-
-
 
 
 

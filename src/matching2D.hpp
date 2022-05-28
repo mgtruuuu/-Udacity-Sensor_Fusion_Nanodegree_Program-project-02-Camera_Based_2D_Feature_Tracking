@@ -1,6 +1,16 @@
 #ifndef matching2D_hpp
 #define matching2D_hpp
 
+#include "dataStructures.h"
+#include "options.h"
+
+#include <opencv2/core.hpp>
+#include <opencv2/features2d.hpp>
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/xfeatures2d.hpp>
+#include <opencv2/xfeatures2d/nonfree.hpp>
+
 #include <chrono>
 #include <cmath>
 #include <fstream>
@@ -8,18 +18,8 @@
 #include <iostream>
 #include <limits>
 #include <sstream>
-#include <stdio.h>
+//#include <stdio.h>
 #include <vector>
-
-#include <opencv2/core.hpp>
-#include <opencv2/highgui/highgui.hpp>
-#include <opencv2/imgproc/imgproc.hpp>
-#include <opencv2/features2d.hpp>
-#include <opencv2/xfeatures2d.hpp>
-#include <opencv2/xfeatures2d/nonfree.hpp>
-
-#include "dataStructures.h"
-#include "enums.h"
 
 
 
@@ -59,10 +59,13 @@ void visualizeMatches(const cv::Mat& imgFront, const cv::Mat& imgBack,
 
 
 
-void printTable(Detector detectorType, Descriptor descriptorType, const std::vector<Result>& results);
 
-bool writeRecordToFile(std::string file_name,
-    Detector detectorType, Descriptor descriptorType, std::vector<Result> results);
+
+
+void printTable(const Detector detectorType, const Descriptor descriptorType, const std::vector<Result>& results);
+
+bool writeRecordToFile(const std::string file_name,
+    const Detector detectorType, const Descriptor descriptorType, const std::vector<Result>& results);
 
 
 

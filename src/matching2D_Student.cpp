@@ -1,61 +1,10 @@
-#include <string>
-#include <numeric>
+
 #include "matching2D.hpp"
-#include "enums.h"
 
+#include "options.h"
 
-
-
-std::string_view getDetector(Detector detectorType) {
-    switch (detectorType) {
-    case Detector::SHITOMASI:   return "SHITOMASI";
-    case Detector::HARRIS:      return "HARRIS";
-    case Detector::FAST:        return "FAST";
-    case Detector::BRISK:       return "BRISK";
-    case Detector::ORB:         return "ORB";
-    case Detector::AKAZE:       return "AKAZE";
-    case Detector::SIFT:        return "SIFT";
-    default:                    assert(false, "Wrong Detector type\n");
-    }
-}
-
-std::string_view getMatcher(Matcher matcherType) {
-    switch (matcherType) {
-    case Matcher::MAT_BF:       return "MAT_BF";
-    case Matcher::MAT_FLANN:    return "MAT_FLANN";
-    default:                    assert(false, "Wrong Matcher type\n");
-    }
-}
-
-std::string_view getSelector(Selector selectorType) {
-    switch (selectorType) {
-    case Selector::SEL_NN:      return "SEL_NN";
-    case Selector::SEL_KNN:     return "SEL_KNN";       // for k=2 only
-    default:                    assert(false, "Wrong Selector type\n");
-    }
-}
-
-std::string_view getDescriptor(Descriptor descriptorType) {
-    switch (descriptorType) {
-    case Descriptor::BRIEF:     return "BRIEF";
-    case Descriptor::FREAK:     return "FREAK";
-    case Descriptor::BRISK:     return "BRISK";
-    case Descriptor::ORB:       return "ORB";
-    case Descriptor::AKAZE:     return "AKAZE";
-    case Descriptor::SIFT:      return "SIFT";
-    default:                    assert(false, "Wrong Descriptor type\n");
-    }
-}
-
-std::string_view getDescriptorOption(DescriptorOption descriptorOptionType) {
-    switch (descriptorOptionType) {
-    case DescriptorOption::DES_BINARY:  return "DES_BINARY";
-    case DescriptorOption::DES_HOG:     return "DES_HOG";
-    default:                            assert(false, "Wrong DescriptorOption type\n");
-    }
-}
-
-
+#include <numeric>
+#include <string>
 
 
 
@@ -94,8 +43,8 @@ void getKeypointsAndDescriptors(
 
     // Remove keypoints outside of the vehicleRect.
     const cv::Rect& vehicleRect{ 535, 180, 180, 150 };
-    auto isKPOutOfBox{ [&vehicleRect](const cv::KeyPoint& kp)-> bool {
-            return !vehicleRect.contains(kp.pt);
+    auto isKPOutOfBox{ [&vehicleRect](const cv::KeyPoint& kp) {
+            return (vehicleRect.contains(kp.pt) == false);
         }
     };
     keypoints.erase(std::remove_if(keypoints.begin(), keypoints.end(), isKPOutOfBox), keypoints.end());
@@ -137,7 +86,7 @@ void detectKeypoints(const Detector detectorType, const cv::Mat& imgGray,
     case Detector::SIFT:        detector = cv::SIFT::create();
         detector->detect(imgGray, keypoints);       break;
 
-    default:                    assert(false, "Wrong Detector type!\n");
+    //default:                    assert(false, "Wrong Detector type!\n");
     }
 }
 
@@ -159,7 +108,7 @@ void computeDescriptors(const Detector detectorType, const Descriptor descriptor
     case Descriptor::AKAZE:     extractor = cv::AKAZE::create();    break;
     case Descriptor::SIFT:      extractor = cv::SIFT::create();     break;
 
-    default:                    assert(false, "Wrong Descriptor type!\n");
+    //default:                    assert(false, "Wrong Descriptor type!\n");
     }
 
     //const cv::InputArray& mask{ cv::noArray() };
@@ -219,7 +168,7 @@ void detKeypointsHarris(const cv::Mat& img, std::vector<cv::KeyPoint>& keypoints
 
     // Detect Harris corners and normalize output
 
-    cv::Mat dst{ cv::Mat::zeros(img.size(), CV_32FC1) };
+    const cv::Mat dst{ cv::Mat::zeros(img.size(), CV_32FC1) };
     cv::Mat dst_norm;
     cv::Mat dst_norm_scaled;
 
@@ -319,7 +268,7 @@ void matchDescriptors(const cv::Mat& descSource, const cv::Mat& descRef,
         matcher->match(descSource, descRef, matches);       // Finds the best match for each descriptor in desc1.
     }
     else if (selectorType == Selector::SEL_KNN) {           // k nearest neighbors (k=2)
-        assert(crossCheck == false, "The 8th argument of the function matchDescriptors() in main() must be 'false' in order to choose the SEL_KNN Selector Type.\n");
+        //assert(crossCheck == false, "The 8th argument of the function matchDescriptors() in main() must be 'false' in order to choose the SEL_KNN Selector Type.\n");
         constexpr int k{ 2 };
         std::vector<std::vector<cv::DMatch>> knn_matches;
         matcher->knnMatch(descSource, descRef, knn_matches, k);
@@ -373,8 +322,10 @@ void visualizeMatches(const cv::Mat& imgFront, const cv::Mat& imgBack,
 }
 
 
-//
-void printTable(Detector detectorType, Descriptor descriptorType, const std::vector<Result>& results) {
+
+
+
+void printTable(const Detector detectorType, const Descriptor descriptorType, const std::vector<Result>& results) {
 
     std::cout << "Detector" << '\t'
         << "Descriptor" << '\t'
@@ -398,8 +349,8 @@ void printTable(Detector detectorType, Descriptor descriptorType, const std::vec
 }
 
 
-bool writeRecordToFile(std::string file_name,
-    Detector detectorType, Descriptor descriptorType, std::vector<Result> results) {
+bool writeRecordToFile(const std::string file_name,
+    const Detector detectorType, const Descriptor descriptorType, const std::vector<Result>& results) {
 
     std::ofstream file;
     file.open(file_name, std::ios_base::app);

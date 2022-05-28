@@ -1,4 +1,5 @@
 /* INCLUDES FOR THIS PROJECT */
+
 #include <cmath>
 #include <deque>
 #include <fstream>
@@ -16,8 +17,9 @@
 #include <opencv2/xfeatures2d/nonfree.hpp>
 
 #include "dataStructures.h"
-#include "enums.h"
+#include "options.h"
 #include "matching2D.hpp"
+
 
 
 
@@ -45,11 +47,16 @@ int main(int argc, const char* argv[]) {
     std::deque<DataFrame> dataBuffer;       // list of data frames which are held in memory at the same time
     std::vector<Result> results;
 
-    // Visualization options
-    constexpr bool bVisKPs{ false };
+
+    //
+    //// Visualization options
+    //
+    constexpr bool bVisKPs{ true };
     constexpr bool bVisMatches{ false };
 
+    //
     //// detection/description option
+    //
     constexpr Detector detectorType{ Detector::SIFT };      // SHITOMASI, HARRIS, FAST, BRISK, ORB, AKAZE, SIFT
     constexpr Descriptor descriptorType{ Descriptor::SIFT };// FREAK, BRIEF, BRISK, ORB, AKAZE, SIFT
     constexpr Matcher matcherType{ Matcher::MAT_BF };       // MAT_BF, MAT_FLANN
@@ -75,7 +82,7 @@ int main(int argc, const char* argv[]) {
         const std::string imgFullFilename{ imgBasePath + imgPrefix + imgNumber.str() + imgFileType };
 
         // Load image from file and convert to grayscale.
-        cv::Mat img{ cv::imread(imgFullFilename) };
+        const cv::Mat img{ cv::imread(imgFullFilename) };
         cv::Mat imgGray;
         cv::cvtColor(img, imgGray, cv::COLOR_BGR2GRAY);
 
@@ -198,3 +205,5 @@ int main(int argc, const char* argv[]) {
 
     return 0;
 }
+
+

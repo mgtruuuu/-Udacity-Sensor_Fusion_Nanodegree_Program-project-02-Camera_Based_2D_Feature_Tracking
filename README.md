@@ -2,15 +2,35 @@
 
 ## 1. Project Overview
 
-<img src="images/keypoints.png" width="820" height="248" />
+![](images/keypoints.png)
+
+
+
+
 
 
 This is the mid-term project about Camera-based 2D feature tracking (to check the final project click [here](https://github.com/mgtruuuu/Udacity-Sensor_Fusion_Nanodegree_Program-project-03-Track_an_Object_in_3D_Space.git)). It covers the following key concepts:
 
-- Ring data buffer (to save memory when loading and processing images)
 - Keypoint detection (Shi-Tomasi, HARRIS, FAST, BRISK, ORB, AKAZE and SIFT)
-- Descriptor extraction & matching (BRISK, BRIEF, ORB, FREAK, AKAZE and SIFT)
+- Descriptor extraction (BRISK, BRIEF, ORB, FREAK, AKAZE and SIFT)
+- Matching algorithms (Brute Force, FLANN / (K-)Nearest-Neighbor selection)
 - Performance evaluation (Test and Compare the various algorithms in different combinations)
+
+
+### How it works
+
+1. Load images into ring data buffer (to save memory when loading and processing images)
+
+2. Detect image Keypoints
+
+    ![](images/detectKPs_SIFT.PNG)
+
+3. Extract keypoint Descriptors
+
+4. Get Matches from matching keypoint descriptors between two images
+
+    ![](images/matchKPs_SIFT.PNG)
+
 
 
 ## 2. Key Implementation
@@ -44,16 +64,15 @@ getKeypointsAndDescriptors(detectorType, descriptorType, it_curr->getCameraImg()
 ```
 
 ```c++
-void getKeypointsAndDescriptors(
-    const Detector detectorType, const Descriptor descriptorType, const cv::Mat& imgGray, double& elapsedTime, std::vector<cv::KeyPoint>& keypoints, cv::Mat& descriptors) {
+void getKeypointsAndDescriptors(const Detector detectorType, const Descriptor descriptorType, const cv::Mat& imgGray, double& elapsedTime, std::vector<cv::KeyPoint>& keypoints, cv::Mat& descriptors) {
 
     detectKeypoints(detectorType, imgGray, keypoints);
 
 
     // Remove keypoints outside of the vehicleRect.
     const cv::Rect& vehicleRect{ 535, 180, 180, 150 };
-    auto isKPOutOfBox{ [&vehicleRect](const cv::KeyPoint& kp)-> bool {
-            return !vehicleRect.contains(kp.pt);
+    auto isKPOutOfBox{ [&vehicleRect](const cv::KeyPoint& kp) {
+            return (vehicleRect.contains(kp.pt) == false);
         }
     };
     keypoints.erase(std::remove_if(keypoints.begin(), keypoints.end(), isKPOutOfBox), keypoints.end());
@@ -64,8 +83,7 @@ void getKeypointsAndDescriptors(
 ```
 
 ```c++
-void detectKeypoints(const Detector detectorType, const cv::Mat& imgGray,
-    std::vector<cv::KeyPoint>& keypoints) {
+void detectKeypoints(const Detector detectorType, const cv::Mat& imgGray, std::vector<cv::KeyPoint>& keypoints) {
 
     cv::Ptr<cv::FeatureDetector> detector;
     switch (detectorType) {
@@ -87,15 +105,12 @@ void detectKeypoints(const Detector detectorType, const cv::Mat& imgGray,
 
     case Detector::SIFT:        detector = cv::SIFT::create();
         detector->detect(imgGray, keypoints);       break;
-
-    default:                    assert(false, "Wrong Detector type!\n");
     }
 }
 ```
 
 ```c++
-void computeDescriptors(const Detector detectorType, const Descriptor descriptorType, const cv::Mat& imgGray,
-    std::vector<cv::KeyPoint>& keypoints, cv::Mat& descriptors) {
+void computeDescriptors(const Detector detectorType, const Descriptor descriptorType, const cv::Mat& imgGray, std::vector<cv::KeyPoint>& keypoints, cv::Mat& descriptors) {
 
     cv::Ptr<cv::DescriptorExtractor> extractor;
 
@@ -108,8 +123,6 @@ void computeDescriptors(const Detector detectorType, const Descriptor descriptor
     case Descriptor::ORB:       extractor = cv::ORB::create();      break;
     case Descriptor::AKAZE:     extractor = cv::AKAZE::create();    break;
     case Descriptor::SIFT:      extractor = cv::SIFT::create();     break;
-
-    default:                    assert(false, "Wrong Descriptor type!\n");
     }
 
     extractor->compute(imgGray, keypoints, descriptors);
@@ -153,7 +166,6 @@ void matchDescriptors(const std::vector<cv::KeyPoint>& kPtsSource, const std::ve
         matcher->match(descSource, descRef, matches);       // Finds the best match for each descriptor in desc1.
     }
     else if (selectorType == Selector::SEL_KNN) {           // k nearest neighbors (k=2)
-        assert(crossCheck == false, "The 8th argument of the function matchDescriptors() in main() must be 'false' in order to choose the SEL_KNN Selector Type.\n");
         constexpr int k{ 2 };
         std::vector<std::vector<cv::DMatch>> knn_matches;
         matcher->knnMatch(descSource, descRef, knn_matches, k);
@@ -210,7 +222,7 @@ void matchDescriptors(const std::vector<cv::KeyPoint>& kPtsSource, const std::ve
  | SIFT | BRISK | 111.2881 | 138.5 | 4.99825 | 5.793 | 59.2 | 
  | SIFT | SIFT | 144.4186 | 138.6 | 5.032351 | 5.945847 | 80 | 
 
-Check the file(`./table/benchmark_average.csv`) for more information.
+You can check the result of all combinations from `./table/benchmark_average.csv`.
 
 
 ### Top 3 keypoint/descriptor combinations (based on the benchmark above)
